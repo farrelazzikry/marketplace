@@ -9,3 +9,6 @@
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
+# Auto detect text files and perform LF normalization
+* text=auto
+0194737e283f1dc9f50ba2ca0d0310e9cbea8c14
