@@ -1,26 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Login Marketplace UMKM</title>
+    <meta charset="UTF-8">
+    <title>Login - Calvera ID</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
+<body class="bg-[#0F0F0F] text-white flex items-center justify-center h-screen">
 
-    <h1>Login Marketplace UMKM</h1>
+    <div class="bg-[#1A1A1A] p-10 rounded-xl w-96 shadow-lg">
 
-    <form>
-        <label>Email</label><br>
-        <input type="email" placeholder="Masukkan email"><br><br>
+        <!-- LOGO -->
+        <h1 class="text-3xl font-bold text-center mb-6 tracking-widest">
+            CALVERA ID
+        </h1>
 
-        <label>Password</label><br>
-        <input type="password" placeholder="Masukkan password"><br><br>
+        <h2 class="text-gray-400 text-center mb-6">
+            Login ke akun kamu
+        </h2>
 
-        <button type="submit">Login</button>
-    </form>
+        <form method="POST" action="/login">
+            @csrf
 
-    <p>Belum punya akun?</p>
-    <a href="/register">Register disini</a>
+            <!-- EMAIL -->
+            <div class="mb-4">
+                <label class="block mb-1 text-gray-400">Email</label>
+                <input type="email" name="email"
+                    class="w-full px-4 py-2 bg-black border border-gray-600 rounded-lg focus:outline-none focus:border-gray-400">
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="mb-6">
+                <label class="block mb-1 text-gray-400">Password</label>
+                <input type="password" name="password"
+                    class="w-full px-4 py-2 bg-black border border-gray-600 rounded-lg focus:outline-none focus:border-gray-400">
+            </div>
+
+            <!-- BUTTON -->
+            <button class="w-full bg-gray-300 text-black py-2 rounded-lg hover:bg-white font-semibold">
+                Login
+            </button>
+
+        </form>
+
+        <!-- LINK REGISTER -->
+        <p class="text-center text-gray-400 mt-6">
+            Belum punya akun?
+            <a href="/register" class="text-white hover:underline">
+                Register
+            </a>
+        </p>
+
+    </div>
 
 </body>
 
