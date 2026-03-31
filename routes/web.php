@@ -7,10 +7,9 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\HomeController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'register']);
