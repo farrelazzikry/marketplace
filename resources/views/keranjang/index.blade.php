@@ -1,4 +1,4 @@
-@extends('layouts.app') {{-- Sesuaikan dengan nama file layout utama kamu --}}
+@extends('layout.app')
 
 @section('content')
 <div class="container mx-auto">
