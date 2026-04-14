@@ -9,9 +9,9 @@ return new class extends Migration {
     {
         Schema::table('orders', function (Blueprint $table) {
 
-            $table->string('shipping_name')->after('payment_proof');
-            $table->string('shipping_phone')->after('shipping_name');
-            $table->text('shipping_address')->after('shipping_phone');
+            $table->string('shipping_name');
+            $table->string('shipping_phone');
+            $table->text('shipping_address');
 
         });
     }
