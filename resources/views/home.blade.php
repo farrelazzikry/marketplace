@@ -13,7 +13,6 @@
 
         <x-user.product-card image="https://i.pinimg.com/736x/8f/25/72/8f2572b25e71778b84c48972c3f5395d.jpg" name="T-Shirt"
             price="Rp 180.000" />
-
     </div>
 
 @endsection
