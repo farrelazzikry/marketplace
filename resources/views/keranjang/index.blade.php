@@ -1,4 +1,4 @@
-@extends('layout.headerfooter')
+@extends('layout.user')
 
 @section('content')
     <div class="container mx-auto">
@@ -8,10 +8,10 @@
 
             <div class="lg:col-span-2 space-y-4">
 
-                <x-cart-item image="https://i.pinimg.com/736x/8f/25/72/8f2572b25e71778b84c48972c3f5395d.jpg" name="T-Shirt" variant="Hitam, XL" price="Rp 250.000"
+                <x-user.cart-item image="https://i.pinimg.com/736x/8f/25/72/8f2572b25e71778b84c48972c3f5395d.jpg" name="T-Shirt" variant="Hitam, XL" price="Rp 250.000"
                     qty="1" />
 
-                <x-cart-item image="https://i.pinimg.com/736x/df/cc/4b/dfcc4b0d43fbdfae32a639cc944224b5.jpg" name="Hoodie" variant="Default" price="Rp 500.000"
+                <x-user.cart-item image="https://i.pinimg.com/736x/df/cc/4b/dfcc4b0d43fbdfae32a639cc944224b5.jpg" name="Hoodie" variant="Default" price="Rp 500.000"
                     qty="2" />
 
             </div>  

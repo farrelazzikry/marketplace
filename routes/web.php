@@ -8,8 +8,9 @@ use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PembayaranController;
 
-Route::get('/', [HomeController::class,'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/register', [AuthController::class, 'register'])->name('register');
@@ -25,5 +26,6 @@ Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 
 Route::get('/admin/produk', [AdminController::class, 'produk']);
 Route::get('/admin/pesanan', [AdminController::class, 'pesanan']);
+Route::get('/admin/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran.index');
 
 

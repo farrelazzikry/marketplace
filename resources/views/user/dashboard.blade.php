@@ -1,4 +1,4 @@
-@extends('layout.headerfooter')
+@extends('layout.user')
 
 @section('content')
 
@@ -8,29 +8,11 @@
 
     <div class="grid grid-cols-4 gap-6">
 
-        <!-- PRODUCT -->
-        <div class="bg-[#1A1A1A] rounded-xl overflow-hidden shadow-lg">
-            <img src="https://i.pinimg.com/736x/df/cc/4b/dfcc4b0d43fbdfae32a639cc944224b5.jpg">
-            <div class="p-4">
-                <h2 class="font-semibold text-lg">Calvera Hoodie</h2>
-                <p class="text-gray-400">Rp 350.000</p>
-                <button class="mt-3 w-full bg-gray-300 text-black py-2 rounded-lg hover:bg-white">
-                    Tambah ke Keranjang
-                </button>
-            </div>
-        </div>
+        <x-user.product-card image="https://i.pinimg.com/736x/df/cc/4b/dfcc4b0d43fbdfae32a639cc944224b5.jpg" name="Hoodie"
+            price="Rp 350.000" />
 
-        <!-- PRODUCT -->
-        <div class="bg-[#1A1A1A] rounded-xl overflow-hidden shadow-lg">
-            <img src="https://i.pinimg.com/736x/8f/25/72/8f2572b25e71778b84c48972c3f5395d.jpg">
-            <div class="p-4">
-                <h2 class="font-semibold text-lg">Calvera T-Shirt</h2>
-                <p class="text-gray-400">Rp 180.000</p>
-                <button class="mt-3 w-full bg-gray-300 text-black py-2 rounded-lg hover:bg-white">
-                    Tambah ke Keranjang
-                </button>
-            </div>
-        </div>
+        <x-user.product-card image="https://i.pinimg.com/736x/8f/25/72/8f2572b25e71778b84c48972c3f5395d.jpg" name="T-Shirt"
+            price="Rp 180.000" />
 
     </div>
 

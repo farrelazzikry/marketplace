@@ -1,24 +1,15 @@
-<!DOCTYPE html>
-<html>
+@extends('layout.admin')
 
-<head>
-    <title>Dashboard Admin</title>
-</head>
+@section('content')
 
-<body>
+    <x-admin.page-header title="Dashboard" subtitle="Ringkasan sistem" />
 
-    <h1>Dashboard Admin</h1>
+    <div class="grid grid-cols-3 gap-6">
 
-    <p>Selamat datang di halaman admin.</p>
+        <x-admin.card title="Total Produk" value="20" />
+        <x-admin.card title="Pesanan" value="15" />
+        <x-admin.card title="Pembayaran Pending" value="5" />
 
-    <h3>Menu Admin</h3>
+    </div>
 
-    <ul>
-        <li><a href="/admin/produk">Kelola Produk</a></li>
-        <li><a href="/admin/pesanan">Kelola Pesanan</a></li>
-        <li><a href="/produk">Lihat Produk di Marketplace</a></li>
-    </ul>
-
-</body>
-
-</html>
+@endsection

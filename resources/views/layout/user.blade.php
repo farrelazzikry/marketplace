@@ -11,7 +11,7 @@
 <body class="bg-[#0F0F0F] text-white">
 
     <!-- NAVBAR -->
-    <x-header />
+    <x-user.header />
 
     <!-- CONTENT DINAMIS -->
     <main class="max-w-7xl mx-auto px-6 py-10">
@@ -19,7 +19,7 @@
     </main>
 
     <!-- FOOTER -->
-    <x-footer />
+    <x-user.footer />
 
 </body>
 
