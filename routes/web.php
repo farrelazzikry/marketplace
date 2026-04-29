@@ -1,31 +1,58 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProdukController;
-use App\Http\Controllers\KeranjangController;
-use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PembayaranController;
 
+// USER
+use App\Http\Controllers\User\DashboardController as UserDashboard;
+use App\Http\Controllers\User\ProductController as UserProduct;
+use App\Http\Controllers\User\CartController;
+use App\Http\Controllers\User\CheckoutController;
+use App\Http\Controllers\User\OrderController as UserOrder;
+
+// ADMIN
+use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
+use App\Http\Controllers\Admin\ProductController as AdminProduct;
+use App\Http\Controllers\Admin\OrderController as AdminOrder;
+use App\Http\Controllers\Admin\PaymentController;
+
+// HOME
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// ROUTE AUTH
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/login', [AuthController::class, 'doLogin'])->name('login.process');
 
-Route::get('/admin/dashboard', [DashboardController::class, 'admin'])->name('admin.dashboard');
-Route::get('/user/dashboard', [DashboardController::class, 'user'])->name('user.dashboard');
+// ROUTE USER
+Route::prefix('user')->name('user.')->group(function () {
 
-Route::get('/produk', [ProdukController::class, 'index']);
-Route::get('/produk/{id}', [ProdukController::class, 'show']);
+    Route::get('/dashboard', [UserDashboard::class, 'index'])->name('dashboard');
 
-Route::get('/keranjang', [KeranjangController::class, 'index'])->name('keranjang');
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+    Route::prefix('products')->name('products.')->group(function () {
+        Route::get('/', [UserProduct::class, 'index'])->name('index');
+        Route::get('/{id}', [UserProduct::class, 'show'])->name('show');
+    });
 
-Route::get('/admin/produk', [AdminController::class, 'produk']);
-Route::get('/admin/pesanan', [AdminController::class, 'pesanan']);
-Route::get('/admin/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran.index');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart');
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 
+    // ✅ FIX
+    Route::get('/orders', [UserOrder::class, 'index'])->name('orders');
+});
+// ROUTE ADMIN
+Route::prefix('admin')->name('admin.')->group(function () {
 
+    Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
+
+    Route::prefix('products')->name('products.')->group(function () {
+        Route::get('/', [AdminProduct::class, 'index'])->name('index');
+    });
+
+    // ✅ FIX
+    Route::get('/orders', [AdminOrder::class, 'index'])->name('orders');
+    Route::get('/payments', [PaymentController::class, 'index'])->name('payments');
+
+    Route::get('/payments/verify/{id}', [PaymentController::class, 'verify'])->name('payments.verify');
+    Route::get('/payments/reject/{id}', [PaymentController::class, 'reject'])->name('payments.reject');
+});

@@ -12,14 +12,14 @@
     <div class="flex min-h-screen">
 
         <!-- SIDEBAR -->
-        <x-admin.sidebar />
+        <x-admin.layout.sidebar />
 
         <!-- MAIN AREA -->
         <div class="flex-1 flex flex-col">
 
             <!-- NAVBAR -->
             <div class="sticky top-0 z-50">
-                <x-admin.navbar />
+                <x-admin.layout.navbar />
             </div>
 
             <!-- CONTENT -->
@@ -35,7 +35,17 @@
         </div>
 
     </div>
+    <script>
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden')
+            document.getElementById(id).classList.add('flex')
+        }
 
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden')
+            document.getElementById(id).classList.remove('flex')
+        }
+    </script>
 </body>
 
 </html>
