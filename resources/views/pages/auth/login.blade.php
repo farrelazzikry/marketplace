@@ -20,7 +20,7 @@
             <input type="email" name="email" placeholder="Email" required
                 class="w-full px-4 py-2 rounded-lg bg-[#0D0D0D] border border-gray-700 text-white focus:outline-none focus:border-gray-500">
 
-            <input type="password" name="password" placeholder="Password"
+            <input type="password" name="password" placeholder="Password" required
                 class="w-full px-4 py-2 rounded-lg bg-[#0D0D0D] border border-gray-700 text-white focus:outline-none focus:border-gray-500">
 
             <button type="submit"

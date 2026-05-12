@@ -15,17 +15,17 @@ class PaymentController extends Controller
                 'pembayaran' => [
                     1 => [
                         'user' => 'Farrel',
-                        'bukti' => 'image.jpg',
+                        'bukti' => 'qris.jpeg',
                         'status' => 'Menunggu'
                     ],
                     2 => [
-                        'user' => 'Budi',
-                        'bukti' => 'bukti2.jpg',
+                        'user' => 'Vikram',
+                        'bukti' => 'qris.jpeg',
                         'status' => 'Menunggu'
                     ],
                     3 => [
-                        'user' => 'Andi',
-                        'bukti' => 'bukti3.jpg',
+                        'user' => 'Rafie',
+                        'bukti' => 'qris.jpeg',
                         'status' => 'Menunggu'
                     ]
                 ]

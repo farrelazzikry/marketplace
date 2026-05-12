@@ -14,7 +14,11 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->integer('total_price');
-            $table->string('status')->default('pending');
+            $table->string('phone_number'); // Untuk keperluan konfirmasi WA
+            $table->text('address');
+            $table->string('proof_of_payment')->nullable(); // Foto bukti bayar
+            $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending');
+            $table->text('admin_note')->nullable(); // Untuk alasan jika pembayaran ditolak
             $table->timestamps();
         });
     }

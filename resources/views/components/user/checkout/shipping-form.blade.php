@@ -1,5 +1,5 @@
 <x-user.ui.card>
-    <h2 class="text-xl font-bold mb-5">
+    <h2 class="text-xl mb-5">
         Informasi Pengiriman
     </h2>
 

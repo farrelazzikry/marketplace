@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <title>Admin Panel</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
 <body class="bg-[#0D0D0D] text-white">
 
-    <div class="flex min-h-screen">
+    <div x-data="{ sidebarOpen: false }" class="flex min-h-screen bg-[#0A0A0A]">
 
         <!-- SIDEBAR -->
         <x-admin.layout.sidebar />

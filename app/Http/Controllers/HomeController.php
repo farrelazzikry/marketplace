@@ -12,8 +12,8 @@ class HomeController extends Controller
         $products = app(ProductController::class)->getProducts();
 
         $flashSale = collect($products)->take(5);
-        $recommended = collect($products)->skip(5)->take(10);
+        $latest = collect($products)->skip(5)->take(10);
 
-        return view('home', compact('flashSale', 'recommended'));
+        return view('home', compact('flashSale', 'latest'));
     }
 }
