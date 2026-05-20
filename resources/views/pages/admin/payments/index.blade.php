@@ -1,71 +1,125 @@
 @extends('layout.admin')
 
 @section('content')
-    <div x-data="{ showModal: false, imgSource: '' }"> <!-- Wrapper Alpine.js -->
 
-        <x-admin.layout.page-header title="Pembayaran" subtitle="Ringkasan Pembayaran" />
+    <div x-data="{ showModal: false, imgSource: '' }">
+
+        <x-admin.layout.page-header title="Pembayaran" subtitle="Verifikasi Pembayaran User" />
 
         <x-admin.ui.table>
+
             <x-slot:head>
-                <tr class="text-gray-400 border-b border-gray-700">
+
+                <tr class="border-b border-[#2A2A2A] text-gray-300">
                     <th>User</th>
+                    <th>Order</th>
+                    <th>Metode</th>
                     <th>Bukti</th>
                     <th>Status</th>
                     <th class="text-center">Aksi</th>
                 </tr>
+
                 </x-slot>
 
                 <x-slot:body>
-                    @foreach($pembayaran as $id => $item)
-                        <tr class="border-b border-gray-800 hover:bg-[#222] transition">
-                            <td class="py-4 font-semibold">{{ $item['user'] }}</td>
 
-                            <td>
-                                {{-- Trigger Klik --}}
-                                {{-- Menggunakan helper asset() --}}
-                                <img src="{{ asset('images/' . $item['bukti']) }}"
-                                    @click="imgSource = '{{ asset('images/' . $item['bukti']) }}'; showModal = true"
-                                    class="w-14 h-14 object-cover rounded-lg border border-gray-700 cursor-zoom-in"
-                                    alt="Bukti Pembayaran">
+                    @forelse($payments as $payment)
+
+                        <tr class="border-b border-[#2A2A2A] hover:bg-[#222] transition">
+
+                            <td class="py-4 font-semibold text-white">
+                                {{ $payment->user->name }}
+                            </td>
+
+                            <td class="text-blue-400 font-mono">
+                                #{{ $payment->id }}
+                            </td>
+
+                            <td class="uppercase text-gray-300">
+                                {{ $payment->payment_method }}
                             </td>
 
                             <td>
-                                <x-admin.ui.status type="{{ strtolower($item['status']) }}">
-                                    {{ $item['status'] }}
-                                </x-admin.ui.status>
+
+                                <img src="{{ asset('uploads/payments/' . $payment->proof_of_payment) }}" @click="
+                                            imgSource = '{{ asset('uploads/payments/' . $payment->proof_of_payment) }}';
+                                            showModal = true
+                                        " class="w-16 h-16 object-cover rounded-xl border border-gray-700 cursor-pointer">
+
                             </td>
 
-                            <td class="text-center space-x-2">
-                                @if(strtolower($item['status']) === 'menunggu')
-                                    <a href="{{ route('admin.payments.verify', $id) }}">
-                                        <x-admin.ui.button type="verify">Verifikasi</x-admin.ui.button>
-                                    </a>
-                                    <a href="{{ route('admin.payments.reject', $id) }}">
-                                        <x-admin.ui.button type="reject">Tolak</x-admin.ui.button>
-                                    </a>
+                            <td>
+                                <x-status :status="$payment->payment_status" />
+                            </td>
+
+                            <td class="text-center">
+
+                                @if($payment->payment_status == 'waiting_verification')
+
+                                    <div class="flex justify-center gap-2">
+
+                                        <a href="{{ route('admin.payments.verify', $payment->id) }}">
+
+                                            <x-admin.ui.button type="verify">
+                                                Verifikasi
+                                            </x-admin.ui.button>
+
+                                        </a>
+
+                                        <a href="{{ route('admin.payments.reject', $payment->id) }}">
+
+                                            <x-admin.ui.button type="reject">
+                                                Tolak
+                                            </x-admin.ui.button>
+
+                                        </a>
+
+                                    </div>
+
                                 @else
-                                    <span class="text-gray-500 text-sm italic">Selesai</span>
+
+                                    <span class="text-sm text-gray-500 italic">
+                                        Selesai
+                                    </span>
+
                                 @endif
+
+                            </td>
+
+                        </tr>
+
+                    @empty
+
+                        <tr>
+                            <td colspan="6" class="py-10 text-center text-gray-500">
+                                Belum ada pembayaran
                             </td>
                         </tr>
-                    @endforeach
+
+                    @endforelse
+
                     </x-slot>
+
         </x-admin.ui.table>
 
-        <!-- MODAL OVERLAY -->
+        {{-- MODAL IMAGE --}}
         <template x-teleport="body">
+
             <div x-show="showModal" x-transition.opacity
-                class="fixed inset-0 z-[99] flex items-center justify-center bg-black/90 p-5" @click="showModal = false"
-                @keydown.escape.window="showModal = false" style="display: none;">
+                class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-10" style="display: none;"
+                @click="showModal = false">
 
-                {{-- Tombol Close --}}
-                <button class="absolute top-5 right-5 text-white text-3xl">&times;</button>
+                <button class="absolute top-5 right-5 text-white text-4xl">
+                    &times;
+                </button>
 
-                {{-- Gambar --}}
-                <img :src="imgSource" class="max-w-full max-h-full rounded-lg shadow-2xl border border-gray-800"
+                <img :src="imgSource" class="max-w-full max-h-full rounded-2xl border border-zinc-800 shadow-2xl"
                     @click.stop>
+
             </div>
+
         </template>
 
     </div>
+
 @endsection

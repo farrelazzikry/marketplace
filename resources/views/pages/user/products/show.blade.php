@@ -1,73 +1,129 @@
 @extends('layout.user')
 
 @section('content')
-    <div class="bg-black text-white min-h-screen py-12">
-        <div class="max-w-7xl mx-auto px-6">
+    <div class="py-6 text-white min-h-screen">
 
-            <!-- Ganti bagian ini di show.blade.php -->
-            <a href="{{ route('user.dashboard') }}"
-                class="text-gray-400 hover:text-white transition flex items-center gap-2 mb-8">
-                ← Kembali ke Katalog
+        {{-- Tombol Kembali Minimalis --}}
+        <div class="mb-8">
+            <a href="{{ route('products.index') }}"
+                class="text-[11px] uppercase tracking-widest text-zinc-500 hover:text-[#D4AF37] transition duration-300 flex items-center gap-2">
+                ← Back To Catalogue
             </a>
+        </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+        {{-- Layout Utama Detail Produk --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-start">
 
-                <!-- LEFT: IMAGE -->
-                <div class="rounded-2xl overflow-hidden border border-gray-800 shadow-2xl">
-                    <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" class="w-full h-auto object-cover">
+            {{-- SISI KIRI: DISPLAY FOTO PRODUK --}}
+            <div class="rounded-2xl overflow-hidden border border-zinc-900 bg-zinc-950/40 p-2 shadow-2xl">
+                <img src="{{ asset('uploads/products/' . $product->image) }}" alt="{{ $product->name }}"
+                    class="w-full h-auto object-cover rounded-xl shadow-inner">
+            </div>
+
+            {{-- SISI KANAN: RINCIAN SPESIFIKASI & FORM ORDER --}}
+            <div class="space-y-8">
+
+                {{-- Informasi Nama & Harga --}}
+                <div class="space-y-3 pb-6 border-b border-zinc-900/60">
+                    <h1 class="text-2xl md:text-4xl font-light tracking-tight text-white font-serif-luxury">
+                        {{ $product->name }}
+                    </h1>
+
+                    <div class="pt-2">
+                        @if($product->discount_price)
+                            <div class="flex items-baseline gap-3">
+                                <span class="text-xl md:text-2xl text-[#D4AF37] font-semibold tracking-wider">
+                                    IDR {{ number_format($product->discount_price, 0, ',', '.') }}
+                                </span>
+                                <span class="text-xs md:text-sm text-zinc-600 line-through tracking-wide">
+                                    IDR {{ number_format($product->price, 0, ',', '.') }}
+                                </span>
+                            </div>
+                        @else
+                            <span class="text-xl md:text-2xl text-zinc-300 font-medium tracking-wider">
+                                IDR {{ number_format($product->price, 0, ',', '.') }}
+                            </span>
+                        @endif
+                    </div>
                 </div>
 
-                <!-- RIGHT: DETAILS -->
-                <div class="space-y-6">
-                    <div>
-                        <h1 class="text-4xl font-bold tracking-tight mb-2">{{ $product['name'] }}</h1>
-                        <p class="text-2xl text-blue-500 font-semibold">{{ $product['price'] }}</p>
-                    </div>
-
-                    <div class="border-t border-gray-800 pt-6">
-                        <h3 class="text-lg font-medium text-gray-300 mb-2">Deskripsi Produk</h3>
-                        <p class="text-gray-400 leading-relaxed">
-                            {{ $product['desc'] }}
-                        </p>
-                    </div>
-
-                    @if($product['size'])
-                        <div class="pt-4">
-                            <h3 class="text-lg font-medium text-gray-300 mb-3">Pilih Ukuran</h3>
-                            <div class="flex gap-3">
-                                @foreach(explode(', ', $product['size']) as $size)
-                                    <button
-                                        class="px-5 py-2 border border-gray-700 rounded-lg hover:border-white hover:bg-white hover:text-black transition uppercase text-sm font-bold">
-                                        {{ $size }}
-                                    </button>
-                                @endforeach
-                            </div>
-                        </div>
+                {{-- Status Stok --}}
+                <div class="flex items-center gap-2 text-xs tracking-wide">
+                    <span class="text-zinc-500">Availability:</span>
+                    @if($product->stock > 0)
+                        <span
+                            class="text-emerald-400 font-medium bg-emerald-500/10 px-2.5 py-0.5 rounded-full text-[10px] uppercase border border-emerald-500/20">
+                            In Stock ({{ $product->stock }})
+                        </span>
+                    @else
+                        <span
+                            class="text-rose-400 font-medium bg-rose-500/10 px-2.5 py-0.5 rounded-full text-[10px] uppercase border border-rose-500/20">
+                            Out of Stock
+                        </span>
                     @endif
+                </div>
 
-                    <!-- ACTIONS -->
-                    <div class="pt-8 flex gap-4">
-                        <button
-                            class="flex-1 bg-white text-black py-4 rounded-xl font-bold hover:bg-gray-200 transition text-lg shadow-lg">
-                            Tambah ke Keranjang
-                        </button>
-                        <button class="p-4 border border-gray-700 rounded-xl hover:bg-gray-900 transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
-                        </button>
+                {{-- Deskripsi Produk --}}
+                <div class="space-y-2">
+                    <h3 class="text-xs uppercase tracking-widest text-zinc-400 font-semibold">
+                        Description
+                    </h3>
+                    <p class="text-sm text-zinc-400 leading-relaxed font-light">
+                        {{ $product->description }}
+                    </p>
+                </div>
+
+                {{-- Formulir Tambah Ke Keranjang --}}
+                <div class="pt-4 border-t border-zinc-900/60">
+                    @if(session('is_login'))
+                        <form action="{{ route('user.cart.add', $product->id) }}" method="POST" class="space-y-6">
+                            @csrf
+
+                            {{-- Seleksi Ukuran --}}
+                            <div class="space-y-2">
+                                <label class="block text-[11px] uppercase tracking-widest text-zinc-400 font-medium">
+                                    Select Size
+                                </label>
+                                <div class="relative">
+                                    <select name="size" required
+                                        class="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-200 outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition duration-300 appearance-none">
+                                        <option value="" disabled selected>-- Pilih Ukuran --</option>
+                                        @foreach(explode(',', $product->size) as $size)
+                                            <option value="{{ trim($size) }}">
+                                                {{ trim($size) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <div
+                                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-zinc-500">
+                                        <span class="text-[10px]">▼</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Tombol Submit --}}
+                            <button type="submit"
+                                class="w-full bg-white hover:bg-[#D4AF37] text-black text-xs uppercase tracking-widest font-bold py-3.5 rounded-xl transition duration-300 shadow-xl shadow-white/5">
+                                Masukkan Keranjang
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}"
+                            class="block w-full text-center bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-white text-xs uppercase tracking-widest font-bold py-3.5 rounded-xl transition duration-300">
+                            Sign In To Purchase
+                        </a>
+                    @endif
+                </div>
+
+                {{-- Jaminan Informasi Ekstra --}}
+                <div class="bg-zinc-950/40 p-4 rounded-xl border border-zinc-900/80 space-y-2.5">
+                    <div class="flex items-center gap-3 text-xs text-zinc-500">
+                        <span class="text-base">🚚</span>
+                        <span class="tracking-wide">Pengiriman instan bebas biaya khusus kawasan Batam.</span>
                     </div>
-
-                    <!-- Info Tambahan -->
-                    <div class="bg-[#111] p-4 rounded-xl border border-gray-800 space-y-2">
-                        <p class="text-xs text-gray-500 flex items-center gap-2">
-                            🚚 Pengiriman Gratis untuk wilayah Batam & sekitarnya.
-                        </p>
-                        <p class="text-xs text-gray-500 flex items-center gap-2">
-                            🔄 Pengembalian 7 hari jika barang tidak sesuai.
-                        </p>
+                    <div class="flex items-center gap-3 text-xs text-zinc-500">
+                        <span class="text-base">🛡️</span>
+                        <span class="tracking-wide">Garansi autentikasi & pengembalian penukaran produk 7 hari.</span>
                     </div>
                 </div>
 

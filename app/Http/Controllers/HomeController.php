@@ -2,18 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\User\ProductController;
+use App\Models\Product;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $products = app(ProductController::class)->getProducts();
+        // 1. Ambil produk FLASH SALE (yang ada harga diskon)
+        $flashSale = Product::whereNotNull('discount_price')
+            ->latest()
+            ->take(4)
+            ->get();
 
-        $flashSale = collect($products)->take(5);
-        $latest = collect($products)->skip(5)->take(10);
+        // Kumpulkan semua ID produk yang sudah masuk Flash Sale
+        $flashSaleIds = $flashSale->pluck('id');
 
-        return view('home', compact('flashSale', 'latest'));
+        // 2. Ambil REKOMENDASI (Kecuali produk yang ada di Flash Sale)
+        $recommended = Product::whereNotIn('id', $flashSaleIds)
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
+
+        return view(
+            'home',
+            compact(
+                'flashSale',
+                'recommended'
+            )
+        );
     }
 }

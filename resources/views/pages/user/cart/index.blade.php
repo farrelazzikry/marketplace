@@ -1,55 +1,89 @@
 @extends('layout.user')
 
 @section('content')
-    <div class="container mx-auto">
-        <h1 class="text-3xl mb-8">Keranjang Belanja</h1>
+    {{-- Pindahkan inisialisasi Alpine.js ke pembungkus paling luar halaman keranjang --}}
+    <div x-data="{
+            itemsData: [
+                @foreach($cartItems as $item)
+                    {
+                        id: '{{ $item->id }}',
+                        price: {{ $item->product->discount_price ?? $item->product->price }},
+                        qty: {{ $item->quantity }}
+                    },
+                @endforeach
+            ],
+            selectedItems: [
+                @foreach($cartItems as $item) '{{ $item->id }}', @endforeach
+            ],
+            get totalSelectedQty() {
+                let total = 0;
+                this.itemsData.forEach(item => {
+                    if (this.selectedItems.includes(item.id)) {
+                        total += parseInt(item.qty);
+                    }
+                });
+                return total;
+            },
+            get totalSelectedPrice() {
+                let total = 0;
+                this.itemsData.forEach(item => {
+                    if (this.selectedItems.includes(item.id)) {
+                        total += (item.price * item.qty);
+                    }
+                });
+                return total;
+            }
+        }" @cart-qty-updated.window="
+            let found = itemsData.find(i => i.id === $event.detail.id);
+            if (found) found.qty = $event.detail.qty;
+        " class="max-w-7xl mx-auto px-4 py-10 text-white">
+
+        <h1 class="text-2xl font-bold mb-8 font-serif-luxury tracking-wide">Keranjang Belanja</h1>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
+            {{-- LIST DATA BARANG (KIRI) --}}
             <div class="lg:col-span-2 space-y-4">
-
-                <x-user.cart.cart-item image="https://i.pinimg.com/736x/8f/25/72/8f2572b25e71778b84c48972c3f5395d.jpg"
-                    name="T-Shirt" variant="Hitam, XL" price="Rp 250.000" qty="1" />
-
-                <x-user.cart.cart-item image="https://i.pinimg.com/736x/df/cc/4b/dfcc4b0d43fbdfae32a639cc944224b5.jpg"
-                    name="Hoodie" variant="Default" price="Rp 500.000" qty="2" />
-
+                @forelse($cartItems as $item)
+                    <x-user.cart.cart-item id="{{ $item->id }}" image="{{ $item->product->image }}"
+                        name="{{ $item->product->name }}" price="{{ $item->product->discount_price ?? $item->product->price }}"
+                        qty="{{ $item->quantity }}" size="{{ $item->size }}" />
+                @empty
+                    <div class="text-center py-12 bg-zinc-900 border border-zinc-800 rounded-2xl text-zinc-500">
+                        Keranjang belanjamu kosong.
+                    </div>
+                @endforelse
             </div>
-            <div class="lg:col-span-1">
-                <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 sticky top-10">
-                    <h2 class="text-xl font-bold mb-6">Ringkasan Pesanan</h2>
 
-                    <div class="space-y-4 text-gray-400">
-                        <div class="flex justify-between">
-                            <span>Total Harga (3 barang)</span>
-                            <span>Rp 1.250.000</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Diskon</span>
-                            <span class="text-green-500">- Rp 50.000</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Biaya Pengiriman</span>
-                            <span class="text-white">Gratis</span>
-                        </div>
-                        <hr class="border-gray-800 my-4">
-                        <div class="flex justify-between text-white font-bold text-lg">
-                            <span>Total Bayar</span>
-                            <span class="text-yellow-500">Rp 1.200.000</span>
-                        </div>
+            {{-- RINGKASAN BELANJA (KANAN) --}}
+            <div class="lg:col-span-1">
+                <x-user.ui.summary title="Ringkasan Pesanan">
+
+                    <div class="flex justify-between items-center text-sm">
+                        <span>Total Barang</span>
+                        <span class="text-white font-semibold text-base" x-text="totalSelectedQty + ' Item'"></span>
                     </div>
 
-                    <a href="{{ route('user.checkout') }}">
-                        <button
-                            class="w-full mt-8 bg-white text-black font-bold py-3 rounded-lg hover:bg-gray-200 transition-colors">
-                            Lanjut Ke Pembayaran
-                        </button>
-                    </a>
+                    <div class="flex justify-between items-center border-t border-zinc-800/60 pt-4">
+                        <span class="text-base font-medium text-zinc-300">Total Bayar</span>
+                        <span class="text-xl font-bold text-[#D4AF37]">
+                            Rp <span x-text="new Intl.NumberFormat('id-ID').format(totalSelectedPrice)"></span>
+                        </span>
+                    </div>
 
-                    <p class="text-xs text-gray-500 mt-4 text-center">
-                        Dengan menekan tombol, Anda menyetujui Syarat & Ketentuan Calvera ID.
-                    </p>
-                </div>
+                    <x-slot:footer>
+                        <form action="{{ route('user.checkout') }}" method="GET">
+                            <input type="hidden" name="selected_items" :value="JSON.stringify(selectedItems)">
+
+                            <button type="submit" :disabled="selectedItems.length === 0"
+                                :class="selectedItems.length === 0 ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed shadow-none' : 'bg-white text-black hover:bg-[#D4AF37]'"
+                                class="w-full py-3.5 rounded-xl text-center text-sm font-bold tracking-wider transition duration-300 shadow-lg shadow-white/5">
+                                Lanjut Ke Pembayaran
+                            </button>
+                        </form>
+                    </x-slot:footer>
+
+                </x-user.ui.summary> 
             </div>
 
         </div>

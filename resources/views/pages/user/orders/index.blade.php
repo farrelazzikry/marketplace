@@ -1,119 +1,148 @@
 @extends('layout.user')
 
 @section('content')
-    {{-- Memastikan data session paling fresh yang ditarik --}}
-    @php
-        $adminCtrl = new \App\Http\Controllers\Admin\OrderController();
-        $orders = session('orders', $adminCtrl->getInitialOrders());
 
-        // Filter manual di blade supaya PASTI sinkron dengan data session terbaru
-        $orders = array_filter($orders, function ($o) {
-            return strtolower($o['customer']) === 'farrel';
-        });
-    @endphp
+    <div class="max-w-5xl mx-auto px-6 py-10 text-white">
 
-    <div class="min-h-screen text-white">
-        <div class="max-w-4xl mx-auto px-6 py-8">
-            <div class="flex items-center justify-between mb-8">
-                <h1 class="text-3xl tracking-tight">Pesanan Saya</h1>
-                <span class="text-zinc-500 text-sm">{{ count($orders) }} Pesanan ditemukan</span>
-            </div>
+        {{-- HEADER UTAMA --}}
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-extrabold font-serif-luxury tracking-wide text-zinc-100">
+                Pesanan Saya
+            </h1>
 
-            <div class="space-y-6">
-                @forelse($orders as $order)
+            <span
+                class="px-4 py-1.5 bg-zinc-900 border border-zinc-800 rounded-full text-zinc-400 text-xs font-semibold tracking-wider">
+                {{ $orders->count() }} Pesanan
+            </span>
+        </div>
+
+        <div class="space-y-8">
+
+            @forelse($orders as $order)
+
+                {{-- MENGGUNAKAN KOMPONEN CARD PREMIUM --}}
+                <x-user.ui.card class="!p-0 overflow-hidden">
+
+                    {{-- HEADER CARD PESANAN --}}
                     <div
-                        class="bg-zinc-900/40 border border-zinc-800 rounded-2xl overflow-hidden hover:border-zinc-700 transition duration-300 backdrop-blur-sm">
+                        class="px-6 py-4.5 bg-zinc-900/30 border-b border-zinc-900/80 flex flex-wrap justify-between items-center gap-3">
+                        <div>
+                            <span class="text-xs text-zinc-500 font-bold tracking-widest uppercase block">Tanggal
+                                Transaksi</span>
+                            <p class="text-sm text-zinc-300 font-medium mt-0.5">
+                                {{ $order->created_at->format('d M Y, H:i') }} WIB
+                            </p>
+                        </div>
+                        <div class="flex gap-2">
+                            <x-status :status="$order->payment_status" />
+                            <x-status :status="$order->status" />
+                        </div>
+                    </div>
 
-                        {{-- HEADER CARD: ID & Status --}}
-                        <div class="bg-zinc-900/80 px-6 py-3 flex justify-between items-center border-b border-zinc-800">
-                            <div class="flex items-center gap-3">
-                                <span class="text-blue-500 font-mono text-sm font-bold">{{ $order['id'] }}</span>
-                                <span class="text-zinc-700">|</span>
-                                <span class="text-zinc-500 text-[10px] font-medium tracking-tighter">{{ $order['date'] }}</span>
+                    {{-- BODY CARD PESANAN --}}
+                    <div class="p-6 space-y-6">
+
+                        {{-- DAFTAR ITEM PRODUK --}}
+                        <div class="space-y-5">
+                            @foreach($order->items as $item)
+                                <div class="flex items-center gap-5 border-b border-zinc-900/50 pb-5 last:border-0 last:pb-0">
+
+                                    <img src="{{ asset('uploads/products/' . $item->product->image) }}"
+                                        class="w-20 h-20 object-cover rounded-xl border border-zinc-800/60 shadow-md">
+
+                                    <div class="flex-1">
+                                        <h3 class="font-semibold text-base text-zinc-200 tracking-wide">
+                                            {{ $item->product->name }}
+                                        </h3>
+
+                                        <p class="text-zinc-500 text-xs mt-1 font-medium">
+                                            Jumlah: <span class="text-zinc-400 font-semibold">{{ $item->quantity }}</span>
+                                        </p>
+
+                                        <p class="text-[#D4AF37] font-bold text-sm mt-2 tracking-wide">
+                                            Rp {{ number_format($item->price, 0, ',', '.') }}
+                                        </p>
+                                    </div>
+
+                                </div>
+                            @endforeach
+                        </div>
+
+                        {{-- SEPARATOR INFO --}}
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-zinc-900/80">
+
+                            {{-- INFORMASI PENGIRIMAN --}}
+                            <div>
+                                <h4 class="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-3">
+                                    Informasi Pengiriman
+                                </h4>
+                                <div
+                                    class="text-sm text-zinc-300 space-y-1 bg-[#161616]/40 p-4 rounded-xl border border-zinc-900">
+                                    <p class="font-semibold text-zinc-200">{{ $order->shipping_name }}</p>
+                                    <p class="text-zinc-400 text-xs">{{ $order->shipping_phone }}</p>
+                                    <p class="text-zinc-400 text-xs mt-1 leading-relaxed">{{ $order->shipping_address }}</p>
+                                </div>
                             </div>
 
-                            {{-- Status Badge yang dinamis ngikutin Admin --}}
-                            <span
-                                class="px-3 py-1 rounded-full text-[10px] uppercase font-black tracking-widest
-                                        {{ $order['status'] == 'Proses' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : '' }}
-                                        {{ $order['status'] == 'Dikirim' ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' : '' }}
-                                        {{ $order['status'] == 'Selesai' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : '' }}
-                                        {{ $order['status'] == 'Refund' ? 'bg-red-500/10 text-red-400 border border-red-500/20' : '' }}">
-                                ● {{ $order['status'] }}
+                            {{-- FITUR UPLOAD BUKTI PEMBAYARAN (HANYA JIKA BUKAN COD & BELUM UPLOAD) --}}
+                            @if($order->payment_method != 'cod' && !$order->proof_of_payment)
+                                <div>
+                                    <h4 class="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-3">
+                                        Aksi Pembayaran
+                                    </h4>
+
+                                    <form action="{{ route('user.orders.uploadProof', $order->id) }}" method="POST"
+                                        enctype="multipart/form-data"
+                                        class="bg-[#161616]/40 p-4 rounded-xl border border-zinc-900 space-y-3">
+                                        @csrf
+
+                                        <div class="relative">
+                                            <input type="file" name="proof_of_payment" required
+                                                class="w-full text-xs text-zinc-400 bg-zinc-950/80 border border-zinc-800 rounded-lg p-2.5 focus:outline-none focus:border-[#D4AF37] file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-[#D4AF37]/10 file:text-[#D4AF37] hover:file:bg-[#D4AF37]/20 file:cursor-pointer">
+                                        </div>
+
+                                        <button
+                                            class="w-full bg-white hover:bg-[#D4AF37] text-black text-xs py-2.5 rounded-lg font-bold tracking-wider transition duration-300 shadow-md">
+                                            Kirim Bukti Transfer
+                                        </button>
+                                    </form>
+                                </div>
+                            @endif
+
+                        </div>
+
+                    </div>
+
+                    {{-- FOOTER CARD PESANAN --}}
+                    <div class="px-6 py-4 bg-zinc-900/30 border-t border-zinc-900/80 flex justify-between items-center">
+                        <div class="text-xs font-bold text-zinc-500 uppercase tracking-widest">
+                            Metode: <span class="text-zinc-300 ml-1">{{ strtoupper($order->payment_method) }}</span>
+                        </div>
+
+                        <div class="text-right">
+                            <span class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider block">Total
+                                Tagihan</span>
+                            <span class="text-lg font-extrabold text-[#D4AF37] tracking-wide mt-0.5 block">
+                                Rp {{ number_format($order->total_price, 0, ',', '.') }}
                             </span>
                         </div>
-
-                        {{-- BODY: Detail Produk & Pengiriman --}}
-                        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <!-- Kolom Kiri: Produk -->
-                            <div class="flex gap-4">
-                                <div
-                                    class="w-20 h-20 bg-zinc-950 rounded-xl flex items-center justify-center border border-zinc-800 shrink-0 shadow-inner">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-zinc-800" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-lg text-white mb-1 leading-tight">{{ $order['items'] }}</h3>
-                                    <p class="text-zinc-500 text-xs mb-2 italic">Official Store • Original</p>
-                                    <p class="text-blue-400 font-extrabold tracking-tight text-lg">{{ $order['total'] }}</p>
-                                </div>
-                            </div>
-
-                            <!-- Kolom Kanan: Detail Pengiriman (Nyatu sama background) -->
-                            <div class="space-y-4 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-zinc-800/50 md:pl-8">
-                                <div>
-                                    <h4 class="text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] mb-1">Logistik
-                                    </h4>
-                                    <p class="text-sm text-zinc-400 leading-relaxed">Farrel | (+62) 812-xxxx-xxxx<br>Jl. Raden
-                                        Patah No. 12, Baloi, Batam</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- FOOTER: Action Buttons --}}
-                        <div class="px-6 py-4 bg-zinc-900/30 border-t border-zinc-800/50 flex justify-end items-center gap-3">
-                            <p class="text-[10px] text-zinc-600 mr-auto italic font-medium uppercase tracking-widest">
-                                Auto-Synced with Admin</p>
-
-                            @if($order['status'] == 'Dikirim')
-                                <button
-                                    class="bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-black py-2 px-5 rounded-lg transition shadow-lg shadow-blue-900/20 uppercase tracking-wider">
-                                    Lacak Paket
-                                </button>
-                            @endif
-
-                            @if($order['status'] == 'Selesai')
-                                <button
-                                    class="border border-zinc-700 hover:bg-zinc-800 text-white text-[11px] font-black py-2 px-5 rounded-lg transition uppercase tracking-wider">
-                                    Ulasan Bintang 5
-                                </button>
-                            @endif
-
-                            <button
-                                class="bg-white text-black text-[11px] font-black py-2 px-5 rounded-lg hover:bg-zinc-200 transition shadow-xl uppercase tracking-wider">
-                                Chat Admin
-                            </button>
-                        </div>
                     </div>
-                @empty
-                    <div class="text-center py-24 bg-transparent rounded-3xl border-2 border-dashed border-zinc-900">
-                        <div class="mb-4 flex justify-center">
-                            <div class="p-4 bg-zinc-900/50 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-zinc-700" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                                </svg>
-                            </div>
-                        </div>
-                        <p class="text-zinc-600 font-bold text-lg">Belum ada riwayat pesanan.</p>
-                        <p class="text-zinc-700 text-sm mt-1">Mulai belanja untuk melihat pesananmu di sini.</p>
-                    </div>
-                @endforelse
-            </div>
+
+                </x-user.ui.card>
+
+            @empty
+
+                {{-- JIKA DATA ORDERAN KOSONG --}}
+                <div class="text-center py-24 border border-dashed border-zinc-800 rounded-3xl bg-[#111111]/30">
+                    <p class="text-zinc-500 text-base font-medium">
+                        Belum ada riwayat transaksi pesanan.
+                    </p>
+                </div>
+
+            @endforelse
+
         </div>
+
     </div>
+
 @endsection

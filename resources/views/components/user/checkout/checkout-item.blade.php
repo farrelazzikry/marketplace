@@ -1,9 +1,13 @@
-@props(['name', 'variant', 'price'])
+@props(['name', 'variant', 'price', 'size' => '-'])
 
-<div class="flex justify-between items-center border-b border-gray-800 pb-4">
+<div class="flex justify-between items-center border-b border-zinc-900 pb-4 last:border-0 last:pb-0">
     <div>
-        <h3 class="font-semibold">{{ $name }}</h3>
-        <p class="text-sm text-gray-400">{{ $variant }}</p>
+        <h3 class="font-semibold text-zinc-200 text-sm tracking-wide">{{ $name }}</h3>
+        <div class="flex items-center gap-2 mt-1 text-xs text-zinc-500 font-medium">
+            <span>{{ $variant }}</span>
+            <span class="text-zinc-700">•</span>
+            <span>Ukuran: <span class="text-zinc-400 font-semibold uppercase">{{ $size }}</span></span>
+        </div>
     </div>
-    <span>{{ $price }}</span>
+    <span class="font-bold text-sm text-[#D4AF37] tracking-wide">{{ $price }}</span>
 </div>

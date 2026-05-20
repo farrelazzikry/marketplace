@@ -5,61 +5,44 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\Order;
+
 class PaymentController extends Controller
 {
     public function index()
     {
-        // kalau belum ada di session, set default
-        if (!session()->has('pembayaran')) {
-            session([
-                'pembayaran' => [
-                    1 => [
-                        'user' => 'Farrel',
-                        'bukti' => 'qris.jpeg',
-                        'status' => 'Menunggu'
-                    ],
-                    2 => [
-                        'user' => 'Vikram',
-                        'bukti' => 'qris.jpeg',
-                        'status' => 'Menunggu'
-                    ],
-                    3 => [
-                        'user' => 'Rafie',
-                        'bukti' => 'qris.jpeg',
-                        'status' => 'Menunggu'
-                    ]
-                ]
-            ]);
-        }
+        $payments = Order::with('user')
+            ->whereNotNull('proof_of_payment')
+            ->latest()
+            ->get();
 
-        $pembayaran = session('pembayaran');
-
-        return view('pages.admin.payments.index', compact('pembayaran'));
+        return view('pages.admin.payments.index', compact('payments'));
     }
 
-    // VERIF
     public function verify($id)
     {
-        $pembayaran = session('pembayaran');
+        $order = Order::findOrFail($id);
 
-        if (isset($pembayaran[$id])) {
-            $pembayaran[$id]['status'] = 'Lunas';
-            session(['pembayaran' => $pembayaran]);
-        }
+        $order->update([
+            'payment_status' => 'paid',
+            'status' => 'processing'
+        ]);
 
-        return redirect()->back();
+        return redirect()
+            ->back()
+            ->with('success', 'Pembayaran berhasil diverifikasi');
     }
 
-    // TOLAK
     public function reject($id)
     {
-        $pembayaran = session('pembayaran');
+        $order = Order::findOrFail($id);
 
-        if (isset($pembayaran[$id])) {
-            $pembayaran[$id]['status'] = 'Ditolak';
-            session(['pembayaran' => $pembayaran]);
-        }
+        $order->update([
+            'payment_status' => 'rejected'
+        ]);
 
-        return redirect()->back();
+        return redirect()
+            ->back()
+            ->with('success', 'Pembayaran berhasil ditolak');
     }
 }

@@ -35,4 +35,22 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Calvera ID Custom API Services
+    |--------------------------------------------------------------------------
+    */
+
+    'rajaongkir' => [
+        'key' => env('RAJAONGKIR_API_KEY'),
+    ],
+
+    'komerce' => [
+        'token' => env('KOMERCE_API_TOKEN'),
+        'env' => env('KOMERCE_ENVIRONMENT', 'sandbox'),
+        'base_url' => env('KOMERCE_ENVIRONMENT') === 'production'
+            ? 'https://api.komerce.id/v1'
+            : 'https://api.sandbox.komerce.id/v1', // URL endpoint simulasi QRIS Komerce
+    ],
+
 ];

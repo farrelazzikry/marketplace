@@ -1,53 +1,109 @@
 @extends('layout.admin')
 
 @section('content')
-    <x-admin.layout.page-header title="Pesanan" subtitle="Kelola Transaksi User" />
+
+    <x-admin.layout.page-header title="Pesanan" subtitle="Kelola Pesanan User" />
 
     <x-admin.ui.table>
+
         <x-slot:head>
+
             <tr class="border-b border-[#2A2A2A] text-gray-300">
                 <th class="py-3">ID Order</th>
-                <th>Pelanggan</th>
+                <th>User</th>
                 <th>Produk</th>
                 <th>Total</th>
+                <th>Pembayaran</th>
                 <th>Status</th>
                 <th class="text-center">Aksi</th>
             </tr>
+
             </x-slot>
 
             <x-slot:body>
-                @foreach ($orders as $order)
+
+                @forelse($orders as $order)
+
                     <tr class="border-b border-[#2A2A2A] hover:bg-[#222] transition">
-                        <td class="py-3 font-mono text-blue-400">{{ $order['id'] }}</td>
-                        <td class="font-semibold text-white">{{ $order['customer'] }}</td>
-                        <td class="text-gray-400 text-sm">{{ $order['items'] }}</td>
-                        <td class="text-white">{{ $order['total'] }}</td>
-                        <td>
-                            {{-- Badge Status --}}
-                            <span class="px-3 py-1 rounded-full text-[10px] uppercase font-bold
-                                    {{ $order['status'] == 'Proses' ? 'bg-blue-500/20 text-blue-500' : '' }}
-                                    {{ $order['status'] == 'Dikirim' ? 'bg-yellow-500/20 text-yellow-500' : '' }}
-                                    {{ $order['status'] == 'Selesai' ? 'bg-green-500/20 text-green-500' : '' }}
-                                    {{ $order['status'] == 'Refund' ? 'bg-red-500/20 text-red-500' : '' }}">
-                                {{ $order['status'] }}
-                            </span>
+
+                        <td class="py-4 font-mono text-blue-400">
+                            #{{ $order->id }}
                         </td>
+
+                        <td class="font-semibold text-white">
+                            {{ $order->user->name }}
+                        </td>
+
+                        <td class="text-sm text-gray-400">
+
+                            @foreach($order->items as $item)
+
+                                <div>
+                                    {{ $item->product->name }}
+                                    ({{ $item->quantity }}x)
+                                </div>
+
+                            @endforeach
+
+                        </td>
+
+                        <td class="text-white font-semibold">
+                            Rp {{ number_format($order->total_price, 0, ',', '.') }}
+                        </td>
+
+                        <td>
+                            <x-status :status="$order->payment_status" />
+                        </td>
+
+                        <td>
+                            <x-status :status="$order->status" />
+                        </td>
+
                         <td class="text-center">
-                            {{-- Form Ganti Status --}}
-                            <form action="{{ route('admin.orders.updateStatus', $order['id']) }}" method="POST"
-                                class="flex items-center gap-2 justify-center">
+
+                            <form action="{{ route('admin.orders.updateStatus', $order->id) }}" method="POST">
+
                                 @csrf
+
                                 <select name="status" onchange="this.form.submit()"
-                                    class="bg-[#121212] border border-[#2A2A2A] text-xs text-gray-300 rounded p-1 focus:outline-none focus:border-blue-500 transition">
-                                    <option value="Proses" {{ $order['status'] == 'Proses' ? 'selected' : '' }}>Proses</option>
-                                    <option value="Dikirim" {{ $order['status'] == 'Dikirim' ? 'selected' : '' }}>Dikirim</option>
-                                    <option value="Selesai" {{ $order['status'] == 'Selesai' ? 'selected' : '' }}>Selesai</option>
-                                    <option value="Refund" {{ $order['status'] == 'Refund' ? 'selected' : '' }}>Refund</option>
+                                    class="bg-[#121212] border border-[#2A2A2A] text-xs text-gray-300 rounded-lg p-2 focus:outline-none">
+
+                                    <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>
+                                        Processing
+                                    </option>
+
+                                    <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>
+                                        Shipped
+                                    </option>
+
+                                    <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>
+                                        Completed
+                                    </option>
+
+                                    <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>
+                                        Cancelled
+                                    </option>
+
                                 </select>
+
                             </form>
+
+                        </td>
+
+                    </tr>
+
+                @empty
+
+                    <tr>
+                        <td colspan="7" class="py-10 text-center text-gray-500">
+                            Belum ada pesanan
                         </td>
                     </tr>
-                @endforeach
+
+                @endforelse
+
                 </x-slot>
+
     </x-admin.ui.table>
+
 @endsection

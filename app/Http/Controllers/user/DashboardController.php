@@ -3,17 +3,40 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $products = app(\App\Http\Controllers\User\ProductController::class)->getProducts();
+        // 1. Ambil produk untuk Flash Sale
+        $flashSale = Product::whereNotNull('discount_price')
+            ->latest()
+            ->take(4)
+            ->get();
 
-        $flashSale = collect($products)->take(5);
-        $recommended = collect($products)->skip(5)->take(4);
-        $latest = collect($products)->reverse()->take(4);
+        // Kumpulkan semua ID produk yang sudah masuk Flash Sale
+        $flashSaleIds = $flashSale->pluck('id');
 
-        return view('pages.user.dashboard', compact('flashSale', 'recommended', 'latest'));
+        // 2. Ambil produk untuk rekomendasi (Kecuali produk yang ada di Flash Sale)
+        $recommended = Product::whereNotIn('id', $flashSaleIds)
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
+
+        // 3. Ambil produk terbaru (Kecuali produk yang ada di Flash Sale)
+        $latest = Product::whereNotIn('id', $flashSaleIds)
+            ->latest()
+            ->take(6)
+            ->get();
+
+        return view(
+            'pages.user.dashboard',
+            compact(
+                'flashSale',
+                'recommended',
+                'latest'
+            )
+        );
     }
 }
