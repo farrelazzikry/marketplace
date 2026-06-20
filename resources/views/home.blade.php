@@ -1,0 +1,116 @@
+@extends('layout.user')
+
+@section('content')
+    <div class="space-y-20">
+
+        {{-- 🌌 MINIMALIST EMBEDDED HERO BANNER --}}
+        <div
+            class="relative rounded-3xl overflow-hidden bg-white border border-[#E5E7EB] p-8 md:p-16 flex flex-col justify-center items-center text-center min-h-[340px] shadow-2xl">
+            <div
+                class="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-zinc-900/40 via-transparent to-transparent">
+            </div>
+            <span class="text-[10px] uppercase tracking-[0.4em] text-[#111827] font-bold mb-3">Seasonal Exhibition</span>
+            <h1
+                class="text-3xl md:text-5xl font-bold uppercase tracking-tight text-[#000000] max-w-2xl leading-tight">
+                Elevate Your Everyday <br><span class="text-[40px] uppercase font-normal">Essentials Code</span>
+            </h1>
+            <p class="text-xs text-[#6B7280]-500 tracking-wide mt-4 max-w-md leading-relaxed">
+                Selamat Datang di Calvera ID. Temukan rilisan produk kurasi terbaik pilihan dengan kualitas pengerjaan
+                tertinggi hari ini.
+            </p>
+            <a href="{{ route('products.index') }}"
+                class="mt-8 bg-[#111827] hover:bg-[#1F2937] text-white text-[10px] tracking-widest font-bold uppercase px-6 py-3 rounded-full transition duration-300 shadow-xl shadow-white/5">
+                Browse Catalogue
+            </a>
+        </div>
+
+        {{-- KATEGORI --}}
+        <div class="space-y-6">
+            <div class="space-y-1">
+                <span class="text-[10px] uppercase tracking-[0.3em] text-[#6B7280] font-medium">
+                    Explore Collection
+                </span>
+
+                <h2 class="text-lg md:text-xl font-medium tracking-wide text-[#000000]">
+                    Belanja Berdasarkan Kategori
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <a href="{{ route('products.index', ['category' => 'Atasan']) }}"
+                    class="bg-white border border-[#E5E7EB] rounded-2xl p-6 hover:border-[#D1D5DB] hover:-translate-y-1 transition-all duration-300">
+
+                    <h3 class="font-semibold text-[#111827]">
+                        Atasan
+                    </h3>
+
+                    <p class="text-sm text-[#6B7280] mt-1">
+                        Kaos, Kemeja, Hoodie
+                    </p>
+                </a>
+
+                <a href="{{ route('products.index', ['category' => 'Bawahan']) }}"
+                    class="bg-white border border-[#E5E7EB] rounded-2xl p-6 hover:border-[#D1D5DB] hover:-translate-y-1 transition-all duration-300">
+
+                    <h3 class="font-semibold text-[#111827]">
+                        Bawahan
+                    </h3>
+
+                    <p class="text-sm text-[#6B7280] mt-1">
+                        Celana & Shorts
+                    </p>
+                </a>
+
+                <a href="{{ route('products.index', ['category' => 'Aksesoris']) }}"
+                    class="bg-white border border-[#E5E7EB] rounded-2xl p-6 hover:border-[#D1D5DB] hover:-translate-y-1 transition-all duration-300">
+
+                    <h3 class="font-semibold text-[#111827]">
+                        Aksesoris
+                    </h3>
+
+                    <p class="text-sm text-[#6B7280] mt-1">
+                        Pelengkap Outfit
+                    </p>
+                </a>
+            </div>
+        </div>
+
+        {{-- 🔥 HORIZONTAL SNAP FLASH SALE --}}
+        <div class="space-y-6">
+            <div class="flex justify-between items-end">
+                <div class="space-y-1">
+                    <span class="text-[9px] uppercase tracking-widest text-rose-500 font-bold animate-pulse">Limited
+                        Opportunity</span>
+                    <h2 class="text-lg md:text-xl font-medium tracking-wide text-[#000000]">Flash Sale</h2>
+                </div>
+                <a href="{{ route('products.index') }}"
+                    class="text-xs uppercase tracking-widest text-[#000000] hover:text-[#6B7280] transition duration-300 font-medium border-b border-[#D4AF37]/20 pb-0.5">
+                    View All
+                </a>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                @foreach ($flashSale as $product)
+                    <x-user.product.product-card :id="$product->id" :image="$product->image" :name="$product->name"
+                        :price="$product->price" :discount="$product->discount_price" />
+                @endforeach
+            </div>
+        </div>
+
+        {{-- 🎯 INTUITIVE RECOMMENDED COLL --}}
+        <div id="explore-catalogue" class="space-y-6 pt-6">
+            <div class="space-y-1">
+                <span class="text-[9px] uppercase tracking-widest text-zinc-500 font-medium">Handpicked Just For You</span>
+                <h2 class="text-lg md:text-xl font-medium tracking-wide text-[#000000]">Rekomendasi Untuk Kamu</h2>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                @foreach ($recommended as $product)
+                    <x-user.product.product-card :id="$product['id']" :image="$product['image']" :name="$product['name']"
+                        :price="$product['price']" :discount="$product['discount_price'] ?? null" />
+                @endforeach
+            </div>
+        </div>
+
+    </div>
+@endsection
