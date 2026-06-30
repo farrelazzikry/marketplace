@@ -52,5 +52,13 @@ return [
             ? 'https://api.komerce.id/v1'
             : 'https://api.sandbox.komerce.id/v1', // URL endpoint simulasi QRIS Komerce
     ],
+<<<<<<< HEAD
+=======
+    'midtrans' => [
+        'server_key' => env('MIDTRANS_SERVER_KEY'),
+        'client_key' => env('MIDTRANS_CLIENT_KEY'),
+        'is_sandbox' => env('MIDTRANS_IS_SANDBOX', true),
+    ],
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
 
 ];

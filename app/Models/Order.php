@@ -19,6 +19,12 @@ class Order extends Model
         'shipping_name',
         'shipping_phone',
         'shipping_address',
+<<<<<<< HEAD
+=======
+        'tracking_number',
+        'midtrans_order_id',
+        'midtrans_snap_token',
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
     ];
 
     public function items()

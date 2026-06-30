@@ -41,4 +41,22 @@ class OrderController extends Controller
             ->back()
             ->with('success', 'Status pesanan berhasil diupdate');
     }
+<<<<<<< HEAD
+=======
+    public function updateTracking(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+
+        $request->validate([
+            'tracking_number' => 'required|string|max:255'
+        ]);
+
+        $order->update([
+            'tracking_number' => $request->tracking_number,
+            'status' => 'shipped', // 🔥 OTOMATIS JADI DIKIRIM
+        ]);
+
+        return redirect()->back()->with('success', 'Nomor resi berhasil ditambahkan! Status pesanan otomatis berubah menjadi Dikirim.');
+    }
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
 }

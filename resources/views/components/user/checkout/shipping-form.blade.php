@@ -1,7 +1,11 @@
 @props(['cities' => [], 'totalWeight' => 1000])
 
 <x-user.ui.card>
+<<<<<<< HEAD
     <h2 class="text-xl mb-6 font-bold tracking-wide text-zinc-200">
+=======
+    <h2 class="text-xl mb-6 font-bold tracking-wide text-[#000000]">
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
         Informasi Pengiriman
     </h2>
 
@@ -11,7 +15,11 @@
             <label class="block text-[11px] text-zinc-500 mb-2 uppercase tracking-widest font-semibold">Nama
                 Penerima</label>
             <input type="text" name="shipping_name" placeholder="Masukkan nama lengkap penerima"
+<<<<<<< HEAD
                 class="w-full p-3.5 rounded-xl bg-zinc-900 border border-zinc-800/80 text-white placeholder-zinc-600 text-sm focus:outline-none focus:border-[#D4AF37] transition duration-200"
+=======
+                class="w-full p-3.5 rounded-xl bg-[#CCCCCC] border border-[#E0E0E0]/80 text-[#000000] placeholder-zinc-600 text-sm focus:outline-none focus:border-gray-600 transition duration-200"
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
                 required>
         </div>
 
@@ -19,7 +27,11 @@
             <label class="block text-[11px] text-zinc-500 mb-2 uppercase tracking-widest font-semibold">Nomor
                 Telepon</label>
             <input type="number" name="shipping_phone" placeholder="Contoh: 081234567890"
+<<<<<<< HEAD
                 class="w-full p-3.5 rounded-xl bg-zinc-900 border border-zinc-800/80 text-white placeholder-zinc-600 text-sm focus:outline-none focus:border-[#D4AF37] transition duration-200"
+=======
+                class="w-full p-3.5 rounded-xl bg-[#CCCCCC] border border-[#E0E0E0]/80 text-[#000000] placeholder-zinc-600 text-sm focus:outline-none focus:border-gray-600 transition duration-200"
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
                 required>
         </div>
 
@@ -27,10 +39,17 @@
             <label class="block text-[11px] text-zinc-500 mb-2 uppercase tracking-widest font-semibold">Kota
                 Tujuan</label>
             <select x-model="cityId" @change="fetchOngkir()"
+<<<<<<< HEAD
                 class="w-full p-3.5 rounded-xl bg-zinc-900 border border-zinc-800/80 text-white text-sm focus:outline-none focus:border-[#D4AF37] transition duration-200 cursor-pointer">
                 <option value="" class="text-zinc-600">-- Pilih Kota / Kabupaten --</option>
                 @foreach($cities as $city)
                     <option value="{{ $city['city_id'] }}" class="bg-zinc-900 text-white">
+=======
+                class="w-full p-3.5 rounded-xl bg-[#CCCCCC] border border-[#E0E0E0]/80 text-[#000000] text-sm focus:outline-none focus:border-gray-600 transition duration-200 cursor-pointer">
+                <option value="" class="text-zinc-600">-- Pilih Kota / Kabupaten --</option>
+                @foreach($cities as $city)
+                    <option value="{{ $city['city_id'] }}" class="bg-[#CCCCCC] text-[#000000]">
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
                         {{ $city['type'] }} {{ $city['city_name'] }}
                     </option>
                 @endforeach
@@ -42,7 +61,11 @@
                 <label
                     class="block text-[11px] text-zinc-500 mb-2 uppercase tracking-widest font-semibold">Ekspedisi</label>
                 <select x-model="courier" @change="fetchOngkir()"
+<<<<<<< HEAD
                     class="w-full p-3.5 rounded-xl bg-zinc-900 border border-zinc-800/80 text-white text-sm focus:outline-none focus:border-[#D4AF37] transition duration-200 cursor-pointer">
+=======
+                    class="w-full p-3.5 rounded-xl bg-[#CCCCCC] border border-[#E0E0E0]/80 text-[#000000] text-sm focus:outline-none focus:border-gray-600 transition duration-200 cursor-pointer">
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
                     <option value="jne">JNE (Jalur Nugraha Ekakurir)</option>
                     <option value="pos">POS Indonesia</option>
                     <option value="tiki">TIKI</option>
@@ -53,13 +76,21 @@
                 <label class="block text-[11px] text-zinc-500 mb-2 uppercase tracking-widest font-semibold">Total Berat
                     (Gram)</label>
                 <input type="text" value="{{ number_format($totalWeight) }} g"
+<<<<<<< HEAD
                     class="w-full p-3.5 rounded-xl bg-zinc-900/50 border border-zinc-800/30 text-zinc-400 text-sm focus:outline-none"
+=======
+                    class="w-full p-3.5 rounded-xl bg-[#CCCCCC]/50 border border-[#E0E0E0]/30 text-zinc-400 text-sm focus:outline-none"
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
                     disabled readonly>
             </div>
         </div>
 
         <div x-show="isLoading" class="py-4 flex items-center justify-center gap-2 text-sm text-zinc-400">
+<<<<<<< HEAD
             <svg class="animate-spin h-4 w-4 text-[#D4AF37]" xmlns="http://www.w3.org/2000/svg" fill="none"
+=======
+            <svg class="animate-spin h-4 w-4 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
                 viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor"
@@ -76,21 +107,36 @@
             <div class="grid grid-cols-1 gap-2.5">
                 <template x-for="service in services" :key="service.service">
                     <label
+<<<<<<< HEAD
                         :class="selectedService === service.service ? 'border-[#D4AF37] bg-zinc-900/80 shadow-lg shadow-black/40' : 'border-zinc-800/60 bg-[#111111]'"
                         class="flex items-center justify-between border rounded-xl p-4 cursor-pointer hover:border-[#D4AF37]/60 transition duration-300">
+=======
+                        :class="selectedService === service.service ? 'border-gray-700 bg-gray-100 shadow-lg' : 'border-[#E0E0E0]/60 bg-[#FFFFFF]'"
+                        class="flex items-center justify-between border rounded-xl p-4 cursor-pointer hover:border-gray-500 transition duration-300">
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
 
                         <div class="flex items-center gap-3">
                             <input type="radio" name="shipping_service_radio" :value="service.service"
                                 @change="selectService(service.service, service.cost[0].value)"
+<<<<<<< HEAD
                                 class="w-4 h-4 accent-[#D4AF37]">
                             <div>
                                 <span class="block text-sm font-bold text-zinc-200" x-text="service.service"></span>
+=======
+                                class="w-4 h-4 accent-gray-700">
+                            <div>
+                                <span class="block text-sm font-bold text-[#000000]" x-text="service.service"></span>
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
                                 <span class="text-xs text-zinc-500"
                                     x-text="`${service.description} (${service.cost[0].etd || '-'} Hari)`"></span>
                             </div>
                         </div>
 
+<<<<<<< HEAD
                         <span class="text-sm font-bold text-[#D4AF37]"
+=======
+                        <span class="text-sm font-bold text-gray-700"
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
                             x-text="'Rp ' + new Intl.NumberFormat('id-ID').format(service.cost[0].value)"></span>
                     </label>
                 </template>
@@ -102,10 +148,19 @@
                 Lengkap</label>
             <textarea rows="4" name="shipping_address"
                 placeholder="Nama jalan, gedung, nomor rumah, RT/RW, kecamatan..."
+<<<<<<< HEAD
                 class="w-full p-3.5 rounded-xl bg-zinc-900 border border-zinc-800/80 text-white placeholder-zinc-600 text-sm focus:outline-none focus:border-[#D4AF37] transition duration-200 resize-none"
                 required></textarea>
         </div>
 
+=======
+                class="w-full p-3.5 rounded-xl bg-[#CCCCCC] border border-[#E0E0E0]/80 text-[#000000] placeholder-zinc-600 text-sm focus:outline-none focus:border-gray-600 transition duration-200 resize-none"
+                required></textarea>
+        </div>
+
+        {{-- 🔥 Kirim city_id dan shipping_cost ke server --}}
+        <input type="hidden" name="city_id" :value="cityId">
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
         <input type="hidden" name="shipping_cost" :value="selectedCost">
     </div>
 </x-user.ui.card>
@@ -133,7 +188,10 @@
                 this.resetSelection();
 
                 try {
+<<<<<<< HEAD
                     // Menggunakan route name dengan prefix 'user.' sesuai dengan arsitektur group route Anda
+=======
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
                     const response = await fetch("{{ route('user.checkout.calculate-shipping') }}", {
                         method: 'POST',
                         headers: {
@@ -161,8 +219,11 @@
             selectService(serviceName, cost) {
                 this.selectedService = serviceName;
                 this.selectedCost = cost;
+<<<<<<< HEAD
 
                 // Kirim data ke komponen Summary via global window event listener
+=======
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
                 this.$dispatch('update-ongkir', { cost: parseInt(cost) });
             },
 

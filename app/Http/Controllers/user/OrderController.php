@@ -45,4 +45,23 @@ class OrderController extends Controller
             ->back()
             ->with('success', 'Bukti pembayaran berhasil upload');
     }
+<<<<<<< HEAD
+=======
+    public function confirmReceived($id)
+    {
+        $order = Order::where('id', $id)
+            ->where('user_id', session('user_id'))
+            ->firstOrFail();
+
+        // Hanya bisa dikonfirmasi jika status 'shipped' dan sudah dibayar
+        if ($order->status == 'shipped' && $order->payment_status == 'paid') {
+            $order->update([
+                'status' => 'completed',
+            ]);
+            return redirect()->back()->with('success', 'Terima kasih! Pesanan Anda telah dikonfirmasi diterima.');
+        }
+
+        return redirect()->back()->with('error', 'Pesanan tidak dapat dikonfirmasi.');
+    }
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
 }

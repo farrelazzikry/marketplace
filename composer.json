@@ -3,7 +3,14 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
+<<<<<<< HEAD
     "keywords": ["laravel", "framework"],
+=======
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
     "license": "MIT",
     "require": {
         "php": "^8.2",
@@ -24,7 +31,14 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
+<<<<<<< HEAD
         }
+=======
+        },
+        "files": [
+            "vendor/midtrans/midtrans-php-master/Midtrans.php"
+        ]
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
     },
     "autoload-dev": {
         "psr-4": {
@@ -79,8 +93,17 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+<<<<<<< HEAD
         }
     },
     "minimum-stability": "stable",
     "prefer-stable": true
 }
+=======
+        },
+        "process-timeout": 2000
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2

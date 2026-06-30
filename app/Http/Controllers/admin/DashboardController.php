@@ -22,7 +22,11 @@ class DashboardController extends Controller
 
         // PEMBAYARAN PENDING
         $pendingPayments = Order::where('payment_status', 'waiting_verification')->count();
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
         return view('pages.admin.dashboard', compact(
             'totalProducts',
             'totalOrders',

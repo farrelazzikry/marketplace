@@ -26,6 +26,13 @@ class ProductController extends Controller
                 'id' => 3,
                 'name' => 'Outer'
             ],
+<<<<<<< HEAD
+=======
+            [
+                'id' => 4,
+                'name' => 'Aksesoris'
+            ],
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
         ];
 
         return view('pages.admin.products.index', compact(

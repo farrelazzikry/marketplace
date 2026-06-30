@@ -7,8 +7,16 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
+<<<<<<< HEAD
 use App\Mail\SendOTPRegister;
 
+=======
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
+use App\Mail\SendOTPRegister;
+
+
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
 class AuthController extends Controller
 {
     public function login()
@@ -90,7 +98,10 @@ class AuthController extends Controller
             return back()->with('error', 'Email tidak ditemukan');
         }
 
+<<<<<<< HEAD
         // Proteksi jika email_verified_at null (jika ada user lama yang belum verifikasi)
+=======
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
         if (is_null($user->email_verified_at)) {
             return back()->with('error', 'Akun Anda belum diverifikasi. Silakan hubungi admin.');
         }
@@ -99,6 +110,24 @@ class AuthController extends Controller
             return back()->with('error', 'Password salah');
         }
 
+<<<<<<< HEAD
+=======
+        // === FITUR INGAT SAYA ===
+        if ($request->has('remember')) {
+            $rememberToken = Str::random(60);
+            $user->remember_token = $rememberToken;
+            $user->save();
+
+            // Set cookie berdurasi 30 hari
+            cookie()->queue('remember_token', $rememberToken, 60 * 24 * 30);
+        } else {
+            // Hapus remember token jika tidak dicentang
+            $user->remember_token = null;
+            $user->save();
+            cookie()->queue(cookie()->forget('remember_token'));
+        }
+
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
         session([
             'is_login' => true,
             'user' => $user,
@@ -119,4 +148,53 @@ class AuthController extends Controller
         session()->flush();
         return redirect('/');
     }
+<<<<<<< HEAD
+=======
+    // ================= FORGOT PASSWORD WITH OTP =================
+    public function showForgotForm()
+    {
+        return view('pages.auth.forgot-password');
+    }
+
+    // Kirim OTP ke email untuk reset password
+    public function sendForgotOtp(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ]);
+
+        $otp = rand(100000, 999999);
+        Cache::put('reset_otp_' . $request->email, $otp, 300);
+
+        Mail::to($request->email)->send(new \App\Mail\SendOTPReset($otp, $request->email));
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Kode OTP berhasil dikirim ke email Anda.'
+        ]);
+    }
+
+    // Reset password dengan OTP
+    public function resetPasswordWithOtp(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'otp_code' => 'required|numeric',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $cachedOtp = Cache::get('reset_otp_' . $request->email);
+        if (!$cachedOtp || $cachedOtp != $request->otp_code) {
+            return back()->withInput()->with('error', 'Kode OTP salah atau sudah kedaluwarsa!');
+        }
+
+        $user = User::where('email', $request->email)->first();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        Cache::forget('reset_otp_' . $request->email);
+
+        return redirect()->route('login')->with('success', 'Password berhasil direset. Silakan login dengan password baru.');
+    }
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
 }

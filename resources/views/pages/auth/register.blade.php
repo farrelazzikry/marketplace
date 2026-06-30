@@ -2,6 +2,7 @@
 
 @section('content')
     <div>
+<<<<<<< HEAD
         {{-- Header Form --}}
         <div class="text-center mb-8">
             <h1 class="text-3xl font-semibold tracking-tight text-white font-serif-luxury italic">Create Account</h1>
@@ -9,19 +10,32 @@
         </div>
 
         {{-- Notifikasi Error/Sukses Internal Form --}}
+=======
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-semibold tracking-tight text-[#000000]">Create Account</h1>
+            <p class="text-xs text-zinc-500 tracking-wider uppercase mt-1">Daftar keanggotaan baru</p>
+        </div>
+
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
         <div id="ajax-alert" class="hidden mb-5 p-3.5 rounded-xl text-xs flex items-center gap-2">
             <span id="ajax-alert-dot" class="w-1.5 h-1.5 rounded-full"></span>
             <span id="ajax-alert-text"></span>
         </div>
 
         @if(session('success'))
+<<<<<<< HEAD
             <div
                 class="mb-5 p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-2">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+=======
+            <div class="mb-5 p-3.5 rounded-xl bg-gray-100 border border-gray-300 text-gray-700 text-xs flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-600 animate-pulse"></span>
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
                 <span>{{ session('success') }}</span>
             </div>
         @endif
 
+<<<<<<< HEAD
         @if(session('error'))
             <div
                 class="mb-5 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs flex items-center gap-2">
@@ -35,36 +49,65 @@
                 @foreach ($errors->all() as $error)
                     <div class="flex items-center gap-2">
                         <span class="w-1 h-1 rounded-full bg-rose-500"></span>
+=======
+        @if(session('error') || $errors->any())
+            <div class="mb-5 p-3.5 rounded-xl bg-gray-100 border border-gray-300 text-gray-700 text-xs space-y-1">
+                @if(session('error'))
+                    <div class="flex items-center gap-2">
+                        <span class="w-1 h-1 rounded-full bg-gray-600"></span>
+                        <span>{{ session('error') }}</span>
+                    </div>
+                @endif
+                @foreach ($errors->all() as $error)
+                    <div class="flex items-center gap-2">
+                        <span class="w-1 h-1 rounded-full bg-gray-600"></span>
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
                         <span>{{ $error }}</span>
                     </div>
                 @endforeach
             </div>
         @endif
 
+<<<<<<< HEAD
         {{-- Form Data --}}
+=======
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
         <form method="POST" action="{{ route('register.process') }}" class="space-y-4">
             @csrf
 
             <div class="space-y-1.5">
                 <label class="text-[10px] uppercase tracking-widest text-zinc-400 font-medium pl-1">Full Name</label>
                 <input type="text" name="name" value="{{ old('name') }}" placeholder="Nama Lengkap" required
+<<<<<<< HEAD
                     class="w-full px-4 py-3 rounded-xl bg-black border border-zinc-900 text-sm text-zinc-200 placeholder-zinc-700 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition duration-300">
             </div>
 
             {{-- Kolom Email + Tombol Kirim OTP Berdampingan --}}
+=======
+                    class="w-full px-4 py-3 rounded-xl bg-[#FFFFFF] border border-[#CCCCCC] text-sm text-[#000000] placeholder-zinc-700 focus:outline-none focus:border-[#111827] focus:ring-1 focus:ring-[#111827] transition duration-300">
+            </div>
+
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
             <div class="space-y-1.5">
                 <label class="text-[10px] uppercase tracking-widest text-zinc-400 font-medium pl-1">Email Address</label>
                 <div class="grid grid-cols-3 gap-2">
                     <input type="email" name="email" id="reg-email" value="{{ old('email') }}" placeholder="name@domain.com"
                         required
+<<<<<<< HEAD
                         class="col-span-2 px-4 py-3 rounded-xl bg-black border border-zinc-900 text-sm text-zinc-200 placeholder-zinc-700 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition duration-300">
                     <button type="button" id="btn-otp" onclick="sendOtpCode()"
                         class="col-span-1 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 rounded-xl text-[10px] uppercase tracking-wider font-bold transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+=======
+                        class="col-span-2 px-4 py-3 rounded-xl bg-[#FFFFFF] border border-[#CCCCCC] text-sm text-[#000000] placeholder-zinc-700 focus:outline-none focus:border-[#111827] focus:ring-1 focus:ring-[#111827] transition duration-300">
+                    <button type="button" id="btn-otp" onclick="sendOtpCode()"
+                        class="col-span-1 bg-[#111827] hover:bg-[#1F2937] text-white rounded-xl text-[10px] uppercase tracking-wider font-bold transition duration-300">
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
                         Kirim OTP
                     </button>
                 </div>
             </div>
 
+<<<<<<< HEAD
             {{-- Input Kolom Kode OTP Baru --}}
             <div class="space-y-1.5">
                 <label
@@ -73,34 +116,85 @@
                 </label>
                 <input type="text" name="otp_code" placeholder="Masukkan 6 digit kode" required maxlength="6"
                     class="w-full px-4 py-3 rounded-xl bg-black border border-zinc-900 text-sm text-zinc-200 placeholder-zinc-700 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] tracking-[0.2em] font-mono text-center transition duration-300">
+=======
+            <div class="space-y-1.5">
+                <label
+                    class="text-[10px] uppercase tracking-widest text-[#000000] font-semibold pl-1 flex items-center gap-1.5">
+                    <span class="w-1 h-1 rounded-full bg-gray-600"></span> Verification Code (OTP)
+                </label>
+                <input type="text" name="otp_code" placeholder="Masukkan 6 digit kode" required maxlength="6"
+                    class="w-full px-4 py-3 rounded-xl bg-[#FFFFFF] border border-[#CCCCCC] text-sm text-[#000000] placeholder-zinc-700 focus:outline-none focus:border-[#111827] focus:ring-1 focus:ring-[#111827] tracking-[0.2em] font-mono text-center transition duration-300">
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
             </div>
 
             <div class="space-y-1.5">
                 <label class="text-[10px] uppercase tracking-widest text-zinc-400 font-medium pl-1">Create Password</label>
+<<<<<<< HEAD
                 <input type="password" name="password" placeholder="••••••••" required
                     class="w-full px-4 py-3 rounded-xl bg-black border border-zinc-900 text-sm text-zinc-200 placeholder-zinc-700 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition duration-300">
             </div>
 
             <button type="submit"
                 class="w-full mt-2 bg-white hover:bg-[#D4AF37] text-black py-3 rounded-xl text-xs tracking-wider font-bold uppercase transition duration-300 shadow-lg shadow-white/5">
+=======
+                <div class="relative">
+                    <input type="password" name="password" id="reg-password" placeholder="••••••••" required
+                        class="w-full px-4 py-3 rounded-xl bg-[#FFFFFF] border border-[#CCCCCC] text-sm text-[#000000] placeholder-zinc-700 focus:outline-none focus:border-[#111827] focus:ring-1 focus:ring-[#111827] transition duration-300 pr-12">
+                    <button type="button" onclick="togglePassword('reg-password', this)"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-black transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit"
+                class="w-full mt-2 bg-[#111827] hover:bg-[#1F2937] text-white py-3 rounded-xl text-xs tracking-wider font-bold uppercase transition duration-300 shadow-lg shadow-white/5">
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
                 Register Account
             </button>
         </form>
 
+<<<<<<< HEAD
         {{-- Footer Form Navigation --}}
         <div class="mt-8 pt-5 border-t border-zinc-900/60 text-center">
             <p class="text-xs text-zinc-500 tracking-wide">
                 Sudah memiliki akun terdaftar?
                 <a href="{{ route('login') }}"
                     class="text-white hover:text-[#D4AF37] ml-1 font-medium underline transition duration-300">
+=======
+        <div class="mt-8 pt-5 border-t border-[#CCCCCC]/60 text-center">
+            <p class="text-xs text-zinc-500 tracking-wide">
+                Sudah memiliki akun terdaftar?
+                <a href="{{ route('login') }}"
+                    class="text-gray-700 hover:text-black ml-1 font-medium underline transition duration-300">
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
                     Sign In disini
                 </a>
             </p>
         </div>
     </div>
 
+<<<<<<< HEAD
     {{-- Handler JS AJAX untuk Pengiriman OTP Tanpa Reload --}}
     <script>
+=======
+    <script>
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+            } else {
+                input.type = 'password';
+                btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+            }
+        }
+
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
         function sendOtpCode() {
             const email = document.getElementById('reg-email').value;
             const btnOtp = document.getElementById('btn-otp');
@@ -108,18 +202,27 @@
             const alertDot = document.getElementById('ajax-alert-dot');
             const alertText = document.getElementById('ajax-alert-text');
 
+<<<<<<< HEAD
             // Validasi email kosong di sisi client
+=======
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
             if (!email) {
                 showAlert('rose', 'Silakan masukkan alamat email Anda terlebih dahulu.');
                 return;
             }
 
+<<<<<<< HEAD
             // Kunci tombol dan ubah indikator teks
+=======
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
             btnOtp.disabled = true;
             btnOtp.innerText = 'Mengirim...';
             showAlert('zinc', 'Sedang memproses kode verifikasi ke Gmail...');
 
+<<<<<<< HEAD
             // Lakukan Fetch API AJAX ke backend Laravel
+=======
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
             fetch("{{ route('register.send_otp') }}", {
                 method: "POST",
                 headers: {
@@ -133,8 +236,11 @@
                     if (data.status === 'success') {
                         showAlert('emerald', data.message);
                         btnOtp.innerText = 'Kirim Ulang';
+<<<<<<< HEAD
 
                         // Beri cooldown tombol selama 30 detik agar tidak di-spam user
+=======
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
                         let cooldown = 30;
                         const timer = setInterval(() => {
                             cooldown--;
@@ -146,7 +252,10 @@
                                 btnOtp.innerText = `${cooldown}s`;
                             }
                         }, 1000);
+<<<<<<< HEAD
 
+=======
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
                     } else {
                         showAlert('rose', data.message || 'Gagal mengirim kode OTP.');
                         btnOtp.disabled = false;
@@ -160,7 +269,10 @@
                 });
         }
 
+<<<<<<< HEAD
         // Helper function untuk memanipulasi alert box Tailwind secara dinamis
+=======
+>>>>>>> aa4e8e45e796cd87ec122787605ffc667eb436d2
         function showAlert(type, message) {
             const alertBox = document.getElementById('ajax-alert');
             const alertDot = document.getElementById('ajax-alert-dot');
